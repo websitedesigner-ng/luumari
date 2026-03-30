@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LUUMARI — Wear You.</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --forest: #1a3a2a;
+    --forest-deep: #0f2318;
+    --sage: #6a9a7a;
+    --cream: #f5f0e8;
+    --cream-dark: #ede8df;
+    --ink: #1a1a16;
+    --muted: #7a7a72;
+    --white: #fdfcf9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 20px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(245,240,232,0.93);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(26,58,42,0.1);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    color: var(--forest-deep);
+    text-decoration: none;
+  }
+  .nav-logo span {
+    font-style: italic;
+    font-weight: 300;
+    font-size: 11px;
+    display: block;
+    letter-spacing: 0.3em;
+    color: var(--sage);
+    margin-top: -4px;
+    text-transform: lowercase;
+  }
+  .nav-cta {
+    background: var(--forest);
+    color: var(--cream);
+    text-decoration: none;
+    padding: 10px 24px;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: background 0.3s;
+  }
+  .nav-cta:hover { background: var(--forest-deep); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--forest-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 130px 24px 90px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(45,90,61,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 80%, rgba(106,154,122,0.12) 0%, transparent 60%);
+  }
+  .hero-bg-l {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(140px, 22vw, 260px);
+    color: var(--sage);
+    opacity: 0.08;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    line-height: 1;
+    font-weight: 500;
+    pointer-events: none;
+    user-select: none;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 680px; }
+  .hero-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(50px, 8vw, 100px);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.05;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+  .hero h1 em { font-style: italic; color: var(--sage); }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(16px, 2.5vw, 22px);
+    color: rgba(245,240,232,0.6);
+    font-style: italic;
+    font-weight: 300;
+    margin-bottom: 48px;
+    line-height: 1.6;
+  }
+  .hero-divider {
+    width: 40px; height: 1px;
+    background: var(--sage);
+    margin: 0 auto 40px;
+    opacity: 0.6;
+  }
+  .hero-btn {
+    display: inline-block;
+    border: 1px solid rgba(245,240,232,0.35);
+    color: var(--cream);
+    text-decoration: none;
+    padding: 16px 40px;
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 300;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s;
+  }
+  .hero-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--sage);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .hero-btn:hover { border-color: var(--sage); }
+  .hero-btn:hover::before { transform: scaleX(1); }
+
+  /* PRODUCT GRID — directly under hero */
+  .products {
+    padding: 80px 0 100px;
+    background: var(--cream);
+  }
+  .section-header {
+    text-align: center;
+    margin-bottom: 56px;
+    padding: 0 24px;
+  }
+  .section-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 14px;
+    font-weight: 400;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 400;
+    color: var(--forest-deep);
+    letter-spacing: 0.05em;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3px;
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 3px;
+  }
+
+  .product-card {
+    background: var(--white);
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    text-decoration: none;
+    display: block;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(15,35,24,0.15);
+  }
+
+  .product-img-wrap {
+    width: 100%;
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    position: relative;
+    background: var(--cream-dark);
+  }
+  .product-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.7s ease;
+  }
+  .product-card:hover .product-img { transform: scale(1.06); }
+
+  .product-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15,35,24,0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .product-card:hover .product-overlay { opacity: 1; }
+  .overlay-text {
+    color: var(--cream);
+    font-size: 11px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    font-weight: 400;
+    border: 1px solid rgba(245,240,232,0.6);
+    padding: 12px 28px;
+  }
+
+  .product-info {
+    padding: 20px 22px 26px;
+    border-top: 1px solid var(--cream-dark);
+  }
+  .product-tag {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 400;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .product-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--forest-deep);
+    margin-bottom: 4px;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+  }
+  .product-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.55;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .product-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: var(--forest);
+  }
+  .product-btn {
+    background: var(--forest);
+    color: var(--cream);
+    border: none;
+    padding: 10px 16px;
+    font-family: 'Jost', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+  }
+  .product-btn:hover { background: var(--forest-deep); }
+  .product-btn svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+  /* MANIFESTO */
+  .manifesto {
+    background: var(--white);
+    padding: 100px 24px;
+    text-align: center;
+  }
+  .manifesto-l {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 80px;
+    color: var(--forest);
+    font-weight: 500;
+    margin-bottom: 28px;
+    display: block;
+  }
+  .manifesto-rule {
+    width: 60px; height: 1px;
+    background: var(--forest);
+    margin: 0 auto 40px;
+    opacity: 0.25;
+  }
+  .manifesto p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 3vw, 30px);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.7;
+    max-width: 580px;
+    margin: 0 auto 14px;
+  }
+  .manifesto p strong { font-weight: 600; }
+  .manifesto p em { font-style: italic; }
+
+  /* VISION BAND */
+  .vision-band {
+    background: var(--forest);
+    padding: 90px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  .vision-band::before {
+    content: 'LUUMARI';
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(60px, 14vw, 160px);
+    font-weight: 500;
+    color: rgba(245,240,232,0.035);
+    position: absolute;
+    white-space: nowrap;
+    letter-spacing: 0.2em;
+    pointer-events: none;
+    top: 50%;
+    transform: translateY(-50%);
+    user-select: none;
+  }
+  .vision-statements {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    max-width: 600px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  .vision-item {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    color: rgba(245,240,232,0.72);
+    font-weight: 300;
+    line-height: 1.5;
+    border-top: 1px solid rgba(106,154,122,0.22);
+    padding-top: 32px;
+    width: 100%;
+  }
+  .vision-item:first-child { border-top: none; padding-top: 0; }
+  .vision-item strong { color: var(--cream); font-weight: 500; }
+  .vision-item em { font-style: italic; color: var(--sage); }
+
+  /* FOOTER */
+  footer {
+    background: var(--forest-deep);
+    padding: 60px 24px 40px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+    display: block;
+    margin-bottom: 4px;
+  }
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--sage);
+    letter-spacing: 0.1em;
+    margin-bottom: 28px;
+    display: block;
+  }
+  .footer-rule {
+    width: 40px; height: 1px;
+    background: rgba(106,154,122,0.35);
+    margin: 0 auto 22px;
+  }
+  .footer-copy {
+    font-size: 11px;
+    color: rgba(245,240,232,0.28);
+    letter-spacing: 0.1em;
+    font-weight: 300;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-content > * { animation: fadeUp 0.85s ease both; }
+  .hero-eyebrow { animation-delay: 0.1s; }
+  .hero h1 { animation-delay: 0.25s; }
+  .hero-sub { animation-delay: 0.4s; }
+  .hero-divider { animation-delay: 0.5s; }
+  .hero-btn { animation-delay: 0.62s; }
+
+  /* MOBILE */
+  @media (max-width: 580px) {
+    nav { padding: 16px 20px; }
+    .products-grid { grid-template-columns: 1fr; }
+    .hero { padding: 110px 20px 70px; }
+    .vision-band { padding: 60px 20px; }
+    .product-info { padding: 16px 16px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    LUUMARI
+    <span>Wear You.</span>
+  </a>
+  <a href="#products" class="nav-cta">Shop Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-l">L</div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">African Artistry · Cultural Heritage · Living History</p>
+    <h1>Not just fashion.<br><em>Wear yourself.</em></h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">Each piece is a cultural artifact — rooted in African craftsmanship, made for the everyday.</p>
+    <a href="#products" class="hero-btn">Explore the Collection</a>
+  </div>
+</section>
+
+<!-- PRODUCT GRID — directly under hero -->
+<section class="products" id="products">
+  <div class="section-header">
+    <span class="section-eyebrow">The Collection</span>
+    <h2 class="section-title">Living History</h2>
+  </div>
+
+  <div class="products-grid">
+
+    <!-- Product 1 -->
+    <a href="https://wa.me/1234567890?text=Hi%20Luumari%2C%20I%27m%20interested%20in%20the%20Heritage%20Woven%20Tee" class="product-card" target="_blank" rel="noopener">
+      <div class="product-img-wrap">
+        <img class="product-img"
+          src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&q=80&fit=crop&crop=top"
+          alt="Heritage Woven Tee" loading="lazy" />
+        <div class="product-overlay"><span class="overlay-text">Order on WhatsApp</span></div>
+      </div>
+      <div class="product-info">
+        <span class="product-tag">Signature Piece</span>
+        <div class="product-name">Heritage Woven Tee</div>
+        <div class="product-desc">Inspired by traditional weaving patterns. Soft heavyweight cotton, museum-grade print.</div>
+        <div class="product-footer">
+          <span class="product-price">$89</span>
+          <span class="product-btn">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.005 0C5.374 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.83L.057 23.868l6.192-1.626C7.957 23.437 9.942 24 12.005 24 18.63 24 24 18.627 24 12S18.63 0 12.005 0zm.001 21.818c-1.832 0-3.53-.494-4.99-1.352l-.357-.211-3.676.965.983-3.58-.234-.368A9.808 9.808 0 012.18 12c0-5.415 4.409-9.818 9.826-9.818 5.417 0 9.826 4.403 9.826 9.818 0 5.415-4.41 9.818-9.826 9.818z"/></svg>
+            Order via WhatsApp
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 2 -->
+    <a href="https://wa.me/1234567890?text=Hi%20Luumari%2C%20I%27m%20interested%20in%20the%20Adinkra%20Hoodie" class="product-card" target="_blank" rel="noopener">
+      <div class="product-img-wrap">
+        <img class="product-img"
+          src="https://images.unsplash.com/photo-1611911813383-67769b37a149?w=800&q=80&fit=crop&crop=top"
+          alt="Adinkra Hoodie" loading="lazy" />
+        <div class="product-overlay"><span class="overlay-text">Order on WhatsApp</span></div>
+      </div>
+      <div class="product-info">
+        <span class="product-tag">Cultural Artifact</span>
+        <div class="product-name">Adinkra Hoodie</div>
+        <div class="product-desc">Adinkra symbols hand-rendered into a modern silhouette. Heavyweight fleece, oversized fit.</div>
+        <div class="product-footer">
+          <span class="product-price">$145</span>
+          <span class="product-btn">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.005 0C5.374 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.83L.057 23.868l6.192-1.626C7.957 23.437 9.942 24 12.005 24 18.63 24 24 18.627 24 12S18.63 0 12.005 0zm.001 21.818c-1.832 0-3.53-.494-4.99-1.352l-.357-.211-3.676.965.983-3.58-.234-.368A9.808 9.808 0 012.18 12c0-5.415 4.409-9.818 9.826-9.818 5.417 0 9.826 4.403 9.826 9.818 0 5.415-4.41 9.818-9.826 9.818z"/></svg>
+            Order via WhatsApp
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 3 -->
+    <a href="https://wa.me/1234567890?text=Hi%20Luumari%2C%20I%27m%20interested%20in%20the%20Kente%20Track%20Pants" class="product-card" target="_blank" rel="noopener">
+      <div class="product-img-wrap">
+        <img class="product-img"
+          src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&q=80&fit=crop&crop=top"
+          alt="Kente Track Pants" loading="lazy" />
+        <div class="product-overlay"><span class="overlay-text">Order on WhatsApp</span></div>
+      </div>
+      <div class="product-info">
+        <span class="product-tag">Heritage Series</span>
+        <div class="product-name">Kente Track Pants</div>
+        <div class="product-desc">Kente-inspired stripe detailing on a clean track silhouette. Premium cotton blend, relaxed fit.</div>
+        <div class="product-footer">
+          <span class="product-price">$120</span>
+          <span class="product-btn">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.005 0C5.374 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.83L.057 23.868l6.192-1.626C7.957 23.437 9.942 24 12.005 24 18.63 24 24 18.627 24 12S18.63 0 12.005 0zm.001 21.818c-1.832 0-3.53-.494-4.99-1.352l-.357-.211-3.676.965.983-3.58-.234-.368A9.808 9.808 0 012.18 12c0-5.415 4.409-9.818 9.826-9.818 5.417 0 9.826 4.403 9.826 9.818 0 5.415-4.41 9.818-9.826 9.818z"/></svg>
+            Order via WhatsApp
+          </span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Product 4 -->
+    <a href="https://wa.me/1234567890?text=Hi%20Luumari%2C%20I%27m%20interested%20in%20the%20Artifact%20Varsity%20Jacket" class="product-card" target="_blank" rel="noopener">
+      <div class="product-img-wrap">
+        <img class="product-img"
+          src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?w=800&q=80&fit=crop&crop=top"
+          alt="Artifact Varsity Jacket" loading="lazy" />
+        <div class="product-overlay"><span class="overlay-text">Order on WhatsApp</span></div>
+      </div>
+      <div class="product-info">
+        <span class="product-tag">Statement Piece</span>
+        <div class="product-name">Artifact Varsity Jacket</div>
+        <div class="product-desc">Museum-quality embroidery meets streetwear structure. Limited run, premium wool-blend shell.</div>
+        <div class="product-footer">
+          <span class="product-price">$290</span>
+          <span class="product-btn">
+            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.005 0C5.374 0 0 5.373 0 12c0 2.117.554 4.103 1.523 5.83L.057 23.868l6.192-1.626C7.957 23.437 9.942 24 12.005 24 18.63 24 24 18.627 24 12S18.63 0 12.005 0zm.001 21.818c-1.832 0-3.53-.494-4.99-1.352l-.357-.211-3.676.965.983-3.58-.234-.368A9.808 9.808 0 012.18 12c0-5.415 4.409-9.818 9.826-9.818 5.417 0 9.826 4.403 9.826 9.818 0 5.415-4.41 9.818-9.826 9.818z"/></svg>
+            Order via WhatsApp
+          </span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- THE IDEA / MANIFESTO -->
+<section class="manifesto">
+  <span class="manifesto-l">L</span>
+  <div class="manifesto-rule"></div>
+  <p><strong>Museums</strong> preserve culture.</p>
+  <p>They hold the stories of kings, civilizations, and artistry.</p>
+  <br>
+  <p>But museums are visited <strong>occasionally.</strong><br>Clothing is worn <strong>every day.</strong></p>
+  <br>
+  <p><em>What if the museum could be worn?</em></p>
+</section>
+
+<!-- VISION BAND -->
+<section class="vision-band">
+  <div class="vision-statements">
+    <div class="vision-item">When culture lives only inside museums, it becomes <strong>distant.</strong></div>
+    <div class="vision-item">But when culture is worn, it becomes <em>alive.</em></div>
+    <div class="vision-item">Clothing becomes more than style.<br>It becomes <strong>identity, memory, and power.</strong></div>
+    <div class="vision-item">Trends fade.<br>But <em>identity endures.</em></div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">LUUMARI</span>
+  <span class="footer-tagline">Wear You.</span>
+  <div class="footer-rule"></div>
+  <p class="footer-copy">© 2025 Luumari. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
